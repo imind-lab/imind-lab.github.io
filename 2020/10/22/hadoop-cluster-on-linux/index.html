@@ -23,7 +23,7 @@
 <meta name="description" content="本文详细介绍搭建4个节点的完全分布式Hadoop集群的方法，Linux系统版本是CentOS 7.9，Hadoop版本是3.2.1，JDK版本是1.8。 一、准备环境1、编辑各节点配置文件，添加主节点和从节点的映射关系。1234vi &#x2F;etc&#x2F;hosts172.16.50.2 hadoop01172.16.50.3 hadoop02172.16.50.4 hadoop03   关闭防火墙（每个节点">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hadoop3.2完全分布式集群搭建方法（CentOS7.9+Hadoop3.2.1）">
-<meta property="og:url" content="http://blog.imind.tech/2020/10/22/hadoop_cluster_on_linux/index.html">
+<meta property="og:url" content="http://blog.imind.tech/2020/10/22/hadoop-cluster-on-linux/index.html">
 <meta property="og:site_name" content="仁智实验室">
 <meta property="og:description" content="本文详细介绍搭建4个节点的完全分布式Hadoop集群的方法，Linux系统版本是CentOS 7.9，Hadoop版本是3.2.1，JDK版本是1.8。 一、准备环境1、编辑各节点配置文件，添加主节点和从节点的映射关系。1234vi &#x2F;etc&#x2F;hosts172.16.50.2 hadoop01172.16.50.3 hadoop02172.16.50.4 hadoop03   关闭防火墙（每个节点">
 <meta property="og:locale" content="en_US">
@@ -35,11 +35,11 @@
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://blog.imind.tech/2020/10/22/hadoop_cluster_on_linux/">
+<link rel="canonical" href="http://blog.imind.tech/2020/10/22/hadoop-cluster-on-linux/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://blog.imind.tech/2020/10/22/hadoop_cluster_on_linux/","path":"2020/10/22/hadoop_cluster_on_linux/","title":"Hadoop3.2完全分布式集群搭建方法（CentOS7.9+Hadoop3.2.1）"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://blog.imind.tech/2020/10/22/hadoop-cluster-on-linux/","path":"2020/10/22/hadoop-cluster-on-linux/","title":"Hadoop3.2完全分布式集群搭建方法（CentOS7.9+Hadoop3.2.1）"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>Hadoop3.2完全分布式集群搭建方法（CentOS7.9+Hadoop3.2.1） | 仁智实验室</title>
@@ -88,9 +88,9 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">13</span></a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">3</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">13</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">15</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">4</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">14</span></a></li>
   </ul>
 </nav>
 
@@ -134,16 +134,16 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
@@ -182,7 +182,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://blog.imind.tech/2020/10/22/hadoop_cluster_on_linux/">
+    <link itemprop="mainEntityOfPage" href="http://blog.imind.tech/2020/10/22/hadoop-cluster-on-linux/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -300,13 +300,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2020/10/22/hive_on_linux/" rel="prev" title="Linux上Hive 安装与配置">
+                <a href="/2020/10/22/hive-on-linux/" rel="prev" title="Linux上Hive 安装与配置">
                   <i class="fa fa-chevron-left"></i> Linux上Hive 安装与配置
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/05/23/command_on_k8s/" rel="next" title="K8s常用命令">
-                  K8s常用命令 <i class="fa fa-chevron-right"></i>
+                <a href="/2021/05/23/k8s-on-mac/" rel="next" title="Mac下配置微服务集成开发环境">
+                  Mac下配置微服务集成开发环境 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -334,7 +334,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">宋 力</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  <div class="powered-by">Powered by  imind.tech 
   </div>
 
     </div>

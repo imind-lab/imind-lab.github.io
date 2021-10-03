@@ -84,9 +84,9 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">13</span></a></li>
-        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">3</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">13</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">15</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">4</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">14</span></a></li>
   </ul>
 </nav>
 
@@ -129,16 +129,16 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">categories</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">15</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
@@ -176,7 +176,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://blog.imind.tech/2020/10/22/hadoop_cluster_on_linux/">
+    <link itemprop="mainEntityOfPage" href="http://blog.imind.tech/2021/05/23/k8s-on-mac/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -189,7 +189,121 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/22/hadoop_cluster_on_linux/" class="post-title-link" itemprop="url">Hadoop3.2完全分布式集群搭建方法（CentOS7.9+Hadoop3.2.1）</a>
+          <a href="/2021/05/23/k8s-on-mac/" class="post-title-link" itemprop="url">Mac下配置微服务集成开发环境</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-23 06:58:51" itemprop="dateCreated datePublished" datetime="2021-05-23T06:58:51+08:00">2021-05-23</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-10-03 13:03:30" itemprop="dateModified" datetime="2021-10-03T13:03:30+08:00">2021-10-03</time>
+      </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/kubernetes/" itemprop="url" rel="index"><span itemprop="name">kubernetes</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h4 id="一、安装Docker-Desktop"><a href="#一、安装Docker-Desktop" class="headerlink" title="一、安装Docker-Desktop"></a>一、安装Docker-Desktop</h4><h5 id="1、下载与安装"><a href="#1、下载与安装" class="headerlink" title="1、下载与安装"></a>1、下载与安装</h5><p>下载地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/editions/community/docker-ce-desktop-mac/">https://hub.docker.com/editions/community/docker-ce-desktop-mac/</a></p>
+<p>安装完成后，启动Docker，点击鲸鱼图标可显示docker的相关操作。</p>
+<h5 id="2、配置镜像加速"><a href="#2、配置镜像加速" class="headerlink" title="2、配置镜像加速"></a>2、配置镜像加速</h5><p>在Docker的Preferences中配置加速器。</p>
+<p>阿里云加速器地址：<a target="_blank" rel="noopener" href="https://754jn7no.mirror.aliyuncs.com/">https://754jn7no.mirror.aliyuncs.com</a> 。</p>
+<h4 id="二、开启Docker内置Kubernetes"><a href="#二、开启Docker内置Kubernetes" class="headerlink" title="二、开启Docker内置Kubernetes"></a>二、开启Docker内置Kubernetes</h4><h5 id="1、拉取kubernetes系统镜像"><a href="#1、拉取kubernetes系统镜像" class="headerlink" title="1、拉取kubernetes系统镜像"></a>1、拉取kubernetes系统镜像</h5><p>国内网络不能下载 <code>Kubernetes</code> 集群所需要的镜像。 而GitHub Actions实现 <code>k8s.gcr.io</code> 上 <code>kubernetes</code> 依赖镜像自动同步到 Docker Hub上指定的仓库中。 通过k8s-docker-desktop-for-mac将所需镜像从 <code>Docker Hub</code> 的同步仓库中取回，并重新打上原始的<code>tag</code>. </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/maguowei/k8s-docker-desktop-for-mac.git</span><br><span class="line">cd k8s-docker-desktop-for-mac</span><br><span class="line">./load_images.sh</span><br></pre></td></tr></table></figure>
+
+<h5 id="2、开启kubernetes"><a href="#2、开启kubernetes" class="headerlink" title="2、开启kubernetes"></a>2、开启kubernetes</h5><p>在Docker的Preferences中开启enable kubernetes选项。</p>
+<h4 id="三、安装Kubernetes提效工具"><a href="#三、安装Kubernetes提效工具" class="headerlink" title="三、安装Kubernetes提效工具"></a>三、安装Kubernetes提效工具</h4><h5 id="1、命令行小工具："><a href="#1、命令行小工具：" class="headerlink" title="1、命令行小工具："></a>1、命令行小工具：</h5><p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/ahmetb/kubectx">https://github.com/ahmetb/kubectx</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mv kubectx_v0.9.3_darwin_x86_64/kubectx /usr/<span class="built_in">local</span>/bin</span><br><span class="line">mv kubens_v0.9.3_darwin_x86_64/kubens /usr/<span class="built_in">local</span>/bin</span><br></pre></td></tr></table></figure>
+
+<h5 id="2、Kubernetes集群管理工具Kuboard的安装"><a href="#2、Kubernetes集群管理工具Kuboard的安装" class="headerlink" title="2、Kubernetes集群管理工具Kuboard的安装"></a>2、Kubernetes集群管理工具Kuboard的安装</h5><p>1）安装</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f https://kuboard.cn/install-script/kuboard.yaml</span><br><span class="line">kubectl apply -f https://addons.kuboard.cn/metrics-server/0.3.7/metrics-server.yaml</span><br></pre></td></tr></table></figure>
+
+<p>2）查看Kuboard运行状态</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods -l k8s.kuboard.cn/name=kuboard -n kube-system</span><br><span class="line"><span class="meta">#</span><span class="bash"> NAME                       READY   STATUS        RESTARTS   AGE</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> kuboard-54c9c4f6cb-6lf88   1/1     Running       0          45s</span></span><br></pre></td></tr></table></figure>
+
+<p>3）配置访问</p>
+<p>traefik-kuboard.yaml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">IngressRoute</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">ingresskuboard</span></span><br><span class="line">  <span class="attr">namespace:</span> <span class="string">kube-system</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">entryPoints:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">web</span></span><br><span class="line">  <span class="attr">routes:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">match:</span> <span class="string">Host(`lka.imind.tech`)</span></span><br><span class="line">    <span class="attr">kind:</span> <span class="string">Rule</span></span><br><span class="line">    <span class="attr">services:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">kuboard</span></span><br><span class="line">      <span class="attr">port:</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<p>创建kuboard的traefik路由</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f traefik-kuboard.yaml</span><br></pre></td></tr></table></figure>
+
+<p>3）获取Token</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> $(kubectl -n kube-system get secret $(kubectl -n kube-system get secret | grep kuboard-user | awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>) -o go-template=<span class="string">&#x27;&#123;&#123;.data.token&#125;&#125;&#x27;</span> | base64 -d)</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li> 添加本地hosts文件</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;127.0.0.1	lka.imind.tech&#x27; &gt; /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>5）使用输出信息中 token字段访问Kuboard</p>
+<p>访问kuboard</p>
+<p><a target="_blank" rel="noopener" href="http://lka.imind.tech/">http://lka.imind.tech</a></p>
+<h5 id=""><a href="#" class="headerlink" title=""></a></h5>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://blog.imind.tech/2020/10/22/hadoop-cluster-on-linux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋 力">
+      <meta itemprop="description" content="仁者见仁、智者见智">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="仁智实验室">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2020/10/22/hadoop-cluster-on-linux/" class="post-title-link" itemprop="url">Hadoop3.2完全分布式集群搭建方法（CentOS7.9+Hadoop3.2.1）</a>
         </h2>
 
         <div class="post-meta-container">
@@ -303,7 +417,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://blog.imind.tech/2020/10/22/hive_on_linux/">
+    <link itemprop="mainEntityOfPage" href="http://blog.imind.tech/2020/10/22/hive-on-linux/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -316,7 +430,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/22/hive_on_linux/" class="post-title-link" itemprop="url">Linux上Hive 安装与配置</a>
+          <a href="/2020/10/22/hive-on-linux/" class="post-title-link" itemprop="url">Linux上Hive 安装与配置</a>
         </h2>
 
         <div class="post-meta-container">
@@ -393,7 +507,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://blog.imind.tech/2020/10/22/java_on_linux/">
+    <link itemprop="mainEntityOfPage" href="http://blog.imind.tech/2020/10/22/java-on-linux/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -406,7 +520,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/10/22/java_on_linux/" class="post-title-link" itemprop="url">Linux上Java的安装与配置</a>
+          <a href="/2020/10/22/java-on-linux/" class="post-title-link" itemprop="url">Linux上Java的安装与配置</a>
         </h2>
 
         <div class="post-meta-container">
@@ -485,7 +599,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://blog.imind.tech/2020/05/27/mysql_on_docker/">
+    <link itemprop="mainEntityOfPage" href="http://blog.imind.tech/2020/05/27/mysql-on-docker/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -498,7 +612,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/05/27/mysql_on_docker/" class="post-title-link" itemprop="url">Docker安装Mysql</a>
+          <a href="/2020/05/27/mysql-on-docker/" class="post-title-link" itemprop="url">Docker安装Mysql</a>
         </h2>
 
         <div class="post-meta-container">
@@ -565,7 +679,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://blog.imind.tech/2020/05/25/key_login_hadoop/">
+    <link itemprop="mainEntityOfPage" href="http://blog.imind.tech/2020/05/25/key-login-hadoop/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -578,7 +692,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/05/25/key_login_hadoop/" class="post-title-link" itemprop="url">Hadoop集群配置免密SSH登录方法</a>
+          <a href="/2020/05/25/key-login-hadoop/" class="post-title-link" itemprop="url">Hadoop集群配置免密SSH登录方法</a>
         </h2>
 
         <div class="post-meta-container">
@@ -669,7 +783,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">宋 力</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  <div class="powered-by">Powered by  imind.tech 
   </div>
 
     </div>
