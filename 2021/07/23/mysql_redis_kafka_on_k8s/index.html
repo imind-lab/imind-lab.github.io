@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.imind.tech","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="一、安装mysql123456789101112131415161718192021222324252627282930313233343536373839404142434445# 设置要安装命名空间kubens infra# 添加helm仓库helm repo add bitnami https:&#x2F;&#x2F;charts.bitnami.com&#x2F;bitnami# 安装mysqlhelm install">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在Kubernetes上安装Mysql、Redis、Kafka">
+<meta property="og:url" content="http://blog.imind.tech/2021/07/23/mysql_redis_kafka_on_k8s/index.html">
+<meta property="og:site_name" content="仁智实验室">
+<meta property="og:description" content="一、安装mysql123456789101112131415161718192021222324252627282930313233343536373839404142434445# 设置要安装命名空间kubens infra# 添加helm仓库helm repo add bitnami https:&#x2F;&#x2F;charts.bitnami.com&#x2F;bitnami# 安装mysqlhelm install">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-07-22T22:58:51.000Z">
+<meta property="article:modified_time" content="2021-10-03T03:03:14.735Z">
+<meta property="article:author" content="宋 力">
+<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="kafka">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="redis">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://blog.imind.tech/2021/07/23/mysql_redis_kafka_on_k8s/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://blog.imind.tech/2021/07/23/mysql_redis_kafka_on_k8s/","path":"2021/07/23/mysql_redis_kafka_on_k8s/","title":"在Kubernetes上安装Mysql、Redis、Kafka"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>在Kubernetes上安装Mysql、Redis、Kafka | 仁智实验室</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">仁智实验室</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">仁者见仁、智者见智</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">13</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">0</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">13</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%AE%89%E8%A3%85mysql"><span class="nav-number">1.</span> <span class="nav-text">一、安装mysql</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6%E3%80%81%E5%AE%89%E8%A3%85redis"><span class="nav-number">2.</span> <span class="nav-text">6、安装redis</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7%E3%80%81%E5%AE%89%E8%A3%85kafka"><span class="nav-number">3.</span> <span class="nav-text">7、安装kafka</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8%E3%80%81%E5%AE%89%E8%A3%85cmak"><span class="nav-number">4.</span> <span class="nav-text">8、安装cmak</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">宋 力</p>
+  <div class="site-description" itemprop="description">仁者见仁、智者见智</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://blog.imind.tech/2021/07/23/mysql_redis_kafka_on_k8s/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋 力">
+      <meta itemprop="description" content="仁者见仁、智者见智">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="仁智实验室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在Kubernetes上安装Mysql、Redis、Kafka
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-07-23 06:58:51" itemprop="dateCreated datePublished" datetime="2021-07-23T06:58:51+08:00">2021-07-23</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-10-03 11:03:14" itemprop="dateModified" datetime="2021-10-03T11:03:14+08:00">2021-10-03</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h5 id="一、安装mysql"><a href="#一、安装mysql" class="headerlink" title="一、安装mysql"></a>一、安装mysql</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 设置要安装命名空间</span></span><br><span class="line">kubens infra</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 添加helm仓库</span></span><br><span class="line">helm repo add bitnami https://charts.bitnami.com/bitnami</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 安装mysql</span></span><br><span class="line">helm install mysql bitnami/mysql</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash">output</span></span><br><span class="line">WARNING: This chart is deprecated</span><br><span class="line">NAME: mysql</span><br><span class="line">LAST DEPLOYED: Mon May 31 15:04:17 2021</span><br><span class="line">NAMESPACE: infra</span><br><span class="line">STATUS: deployed</span><br><span class="line">REVISION: 1</span><br><span class="line">NOTES:</span><br><span class="line">MySQL can be accessed via port 3306 on the following DNS name from within your cluster:</span><br><span class="line">mysql.infra.svc.cluster.local</span><br><span class="line"></span><br><span class="line">To get your root password run:</span><br><span class="line"></span><br><span class="line">    MYSQL_ROOT_PASSWORD=$(kubectl get secret --namespace infra mysql -o jsonpath=&quot;&#123;.data.mysql-root-password&#125;&quot; | base64 --decode; echo)</span><br><span class="line"></span><br><span class="line">To connect to your database:</span><br><span class="line"></span><br><span class="line">1. Run an Ubuntu pod that you can use as a client:</span><br><span class="line"></span><br><span class="line">    kubectl run -i --tty ubuntu --image=ubuntu:16.04 --restart=Never -- bash -il</span><br><span class="line"></span><br><span class="line">2. Install the mysql client:</span><br><span class="line"></span><br><span class="line">    $ apt-get update &amp;&amp; apt-get install mysql-client -y</span><br><span class="line"></span><br><span class="line">3. Connect using the mysql cli, then provide your password:</span><br><span class="line">    $ mysql -h mysql -p</span><br><span class="line"></span><br><span class="line">To connect to your database directly from outside the K8s cluster:</span><br><span class="line">    MYSQL_HOST=127.0.0.1</span><br><span class="line">    MYSQL_PORT=3306</span><br><span class="line"></span><br><span class="line">    # Execute the following command to route the connection:</span><br><span class="line">    kubectl port-forward svc/mysql 3306</span><br><span class="line"></span><br><span class="line">    mysql -h $&#123;MYSQL_HOST&#125; -P$&#123;MYSQL_PORT&#125; -u root -p$&#123;MYSQL_ROOT_PASSWORD&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>配置MySQL代理网关</p>
+<p>Traffic-mysql.yaml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: traefik.containo.us/v1alpha1</span><br><span class="line">kind: IngressRouteTCP</span><br><span class="line">metadata:</span><br><span class="line">  name: ingressmysql</span><br><span class="line">  namespace: infra</span><br><span class="line">spec:</span><br><span class="line">  entryPoints:</span><br><span class="line">    - mysql</span><br><span class="line">  routes:</span><br><span class="line">  - match: HostSNI(`*`)</span><br><span class="line">    services:</span><br><span class="line">    - name: mysql</span><br><span class="line">      port: 3306</span><br></pre></td></tr></table></figure>
+
+<p>创建mysql的traefik路由</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f traefik-mysql.yaml</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="6、安装redis"><a href="#6、安装redis" class="headerlink" title="6、安装redis"></a>6、安装redis</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装Redis</span></span><br><span class="line">helm install redis bitnami/redis</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash">output</span></span><br><span class="line">NAME: redis</span><br><span class="line">LAST DEPLOYED: Mon May 31 15:07:07 2021</span><br><span class="line">NAMESPACE: infra</span><br><span class="line">STATUS: deployed</span><br><span class="line">REVISION: 1</span><br><span class="line">TEST SUITE: None</span><br><span class="line">NOTES:</span><br><span class="line">** Please be patient while the chart is being deployed **</span><br><span class="line"></span><br><span class="line">Redis(TM) can be accessed on the following DNS names from within your cluster:</span><br><span class="line"></span><br><span class="line">    redis-master.infra.svc.cluster.local for read/write operations (port 6379)</span><br><span class="line">    redis-replicas.infra.svc.cluster.local for read-only operations (port 6379)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">To get your password run:</span><br><span class="line"></span><br><span class="line">    export REDIS_PASSWORD=$(kubectl get secret --namespace infra redis -o jsonpath=&quot;&#123;.data.redis-password&#125;&quot; | base64 --decode)</span><br><span class="line"></span><br><span class="line">To connect to your Redis(TM) server:</span><br><span class="line"></span><br><span class="line">1. Run a Redis(TM) pod that you can use as a client:</span><br><span class="line"></span><br><span class="line">   kubectl run --namespace infra redis-client --restart=&#x27;Never&#x27;  --env REDIS_PASSWORD=$REDIS_PASSWORD  --image docker.io/bitnami/redis:6.2.3-debian-10-r22 --command -- sleep infinity</span><br><span class="line"></span><br><span class="line">   Use the following command to attach to the pod:</span><br><span class="line"></span><br><span class="line">   kubectl exec --tty -i redis-client \</span><br><span class="line">   --namespace infra -- bash</span><br><span class="line"></span><br><span class="line">2. Connect using the Redis(TM) CLI:</span><br><span class="line">   redis-cli -h redis-master -a $REDIS_PASSWORD</span><br><span class="line">   redis-cli -h redis-replicas -a $REDIS_PASSWORD</span><br><span class="line"></span><br><span class="line">To connect to your database from outside the cluster execute the following commands:</span><br><span class="line"></span><br><span class="line">    kubectl port-forward --namespace infra svc/redis-master 6379:6379 &amp;</span><br><span class="line">    redis-cli -h 127.0.0.1 -p 6379 -a $REDIS_PASSWORD</span><br></pre></td></tr></table></figure>
+
+<h5 id="7、安装kafka"><a href="#7、安装kafka" class="headerlink" title="7、安装kafka"></a>7、安装kafka</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 安装kafka</span></span><br><span class="line">helm install kafka bitnami/kafka</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> output</span></span><br><span class="line">NAME: kafka</span><br><span class="line">LAST DEPLOYED: Mon May 31 15:09:13 2021</span><br><span class="line">NAMESPACE: infra</span><br><span class="line">STATUS: deployed</span><br><span class="line">REVISION: 1</span><br><span class="line">TEST SUITE: None</span><br><span class="line">NOTES:</span><br><span class="line">** Please be patient while the chart is being deployed **</span><br><span class="line"></span><br><span class="line">Kafka can be accessed by consumers via port 9092 on the following DNS name from within your cluster:</span><br><span class="line"></span><br><span class="line">    kafka.infra.svc.cluster.local</span><br><span class="line"></span><br><span class="line">Each Kafka broker can be accessed by producers via port 9092 on the following DNS name(s) from within your cluster:</span><br><span class="line"></span><br><span class="line">    kafka-0.kafka-headless.infra.svc.cluster.local:9092</span><br><span class="line"></span><br><span class="line">To create a pod that you can use as a Kafka client run the following commands:</span><br><span class="line"></span><br><span class="line">    kubectl run kafka-client --restart=&#x27;Never&#x27; --image docker.io/bitnami/kafka:2.8.0-debian-10-r27 --namespace infra --command -- sleep infinity</span><br><span class="line">    kubectl exec --tty -i kafka-client --namespace infra -- bash</span><br><span class="line"></span><br><span class="line">    PRODUCER:</span><br><span class="line">        kafka-console-producer.sh \</span><br><span class="line">            --broker-list kafka-0.kafka-headless.infra.svc.cluster.local:9092 \</span><br><span class="line">            --topic test</span><br><span class="line"></span><br><span class="line">    CONSUMER:</span><br><span class="line">        kafka-console-consumer.sh \</span><br><span class="line">            --bootstrap-server kafka.infra.svc.cluster.local:9092 \</span><br><span class="line">            --topic sms_callback_aliyun \</span><br><span class="line">            --from-beginning</span><br></pre></td></tr></table></figure>
+
+<h5 id="8、安装cmak"><a href="#8、安装cmak" class="headerlink" title="8、安装cmak"></a>8、安装cmak</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">helm repo add cmak https://eshepelyuk.github.io/cmak-operator</span><br></pre></td></tr></table></figure>
+
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/kubernetes/" rel="tag"># kubernetes</a>
+              <a href="/tags/kafka/" rel="tag"># kafka</a>
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+              <a href="/tags/redis/" rel="tag"># redis</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/06/24/k8s-on-deepin/" rel="prev" title="在Deepin上安装Kubernetes">
+                  <i class="fa fa-chevron-left"></i> 在Deepin上安装Kubernetes
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">宋 力</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

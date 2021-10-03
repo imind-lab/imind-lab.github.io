@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.imind.tech","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Hadoop集群包含1个主节点和2个从节点，需要实现各节点之间的免密码登录，下面介绍具体的实现方法。 一、Hadoop集群环境节点名称        节点IP hadoop01        172.16.50.2hadoop02        172.16.50.3hadoop03        172.16.50.4 二、免密登录原理每台主机authorized_keys文件里面包含的主机（s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop集群配置免密SSH登录方法">
+<meta property="og:url" content="http://blog.imind.tech/2020/05/25/key_login_hadoop/index.html">
+<meta property="og:site_name" content="仁智实验室">
+<meta property="og:description" content="Hadoop集群包含1个主节点和2个从节点，需要实现各节点之间的免密码登录，下面介绍具体的实现方法。 一、Hadoop集群环境节点名称        节点IP hadoop01        172.16.50.2hadoop02        172.16.50.3hadoop03        172.16.50.4 二、免密登录原理每台主机authorized_keys文件里面包含的主机（s">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-25T06:38:51.000Z">
+<meta property="article:modified_time" content="2021-10-03T03:03:14.735Z">
+<meta property="article:author" content="宋 力">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="hadoop">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://blog.imind.tech/2020/05/25/key_login_hadoop/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://blog.imind.tech/2020/05/25/key_login_hadoop/","path":"2020/05/25/key_login_hadoop/","title":"Hadoop集群配置免密SSH登录方法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Hadoop集群配置免密SSH登录方法 | 仁智实验室</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">仁智实验室</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">仁者见仁、智者见智</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">13</span></a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">0</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">13</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E3%80%81Hadoop%E9%9B%86%E7%BE%A4%E7%8E%AF%E5%A2%83"><span class="nav-number">1.</span> <span class="nav-text">一、Hadoop集群环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">二、免密登录原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">三、实现方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%E3%80%81%E9%85%8D%E7%BD%AE%E6%AF%8F%E4%B8%AA%E8%8A%82%E7%82%B9%E7%9A%84hosts%E6%96%87%E4%BB%B6"><span class="nav-number">3.1.</span> <span class="nav-text">1、配置每个节点的hosts文件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%E3%80%81%E6%AF%8F%E4%B8%AA%E8%8A%82%E7%82%B9%E7%94%9F%E6%88%90ssh%E5%AF%86%E9%92%A5"><span class="nav-number">3.2.</span> <span class="nav-text">2、每个节点生成ssh密钥</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">宋 力</p>
+  <div class="site-description" itemprop="description">仁者见仁、智者见智</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://blog.imind.tech/2020/05/25/key_login_hadoop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="宋 力">
+      <meta itemprop="description" content="仁者见仁、智者见智">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="仁智实验室">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Hadoop集群配置免密SSH登录方法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-05-25 14:38:51" itemprop="dateCreated datePublished" datetime="2020-05-25T14:38:51+08:00">2020-05-25</time>
+    </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">Edited on</span>
+        <time title="Modified: 2021-10-03 11:03:14" itemprop="dateModified" datetime="2021-10-03T11:03:14+08:00">2021-10-03</time>
+      </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Hadoop集群包含1个主节点和2个从节点，需要实现各节点之间的免密码登录，下面介绍具体的实现方法。</p>
+<h4 id="一、Hadoop集群环境"><a href="#一、Hadoop集群环境" class="headerlink" title="一、Hadoop集群环境"></a>一、Hadoop集群环境</h4><p>节点名称        节点IP</p>
+<p>hadoop01        172.16.50.2<br>hadoop02        172.16.50.3<br>hadoop03        172.16.50.4</p>
+<h4 id="二、免密登录原理"><a href="#二、免密登录原理" class="headerlink" title="二、免密登录原理"></a>二、免密登录原理</h4><p>每台主机authorized_keys文件里面包含的主机（ssh密钥），该主机都能无密码登录，所以只要每台主机的authorized_keys文件里面都放入其他主机（需要无密码登录的主机）的ssh密钥就行了。</p>
+<h4 id="三、实现方法"><a href="#三、实现方法" class="headerlink" title="三、实现方法"></a>三、实现方法</h4><h5 id="1、配置每个节点的hosts文件"><a href="#1、配置每个节点的hosts文件" class="headerlink" title="1、配置每个节点的hosts文件"></a>1、配置每个节点的hosts文件</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/hosts</span><br><span class="line">172.16.50.1 master</span><br><span class="line">172.16.50.2 node01</span><br><span class="line">172.16.50.3 node02</span><br><span class="line">172.16.50.4 node03</span><br></pre></td></tr></table></figure>
+
+<h5 id="2、每个节点生成ssh密钥"><a href="#2、每个节点生成ssh密钥" class="headerlink" title="2、每个节点生成ssh密钥"></a>2、每个节点生成ssh密钥</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">Enter file in which to save the key (/root/.ssh/id_rsa): </span><br><span class="line">Created directory &#x27;/root/.ssh&#x27;.</span><br><span class="line">Enter passphrase (empty for no passphrase): </span><br><span class="line">Enter same passphrase again: </span><br><span class="line">Your identification has been saved in /root/.ssh/id_rsa.</span><br><span class="line">Your public key has been saved in /root/.ssh/id_rsa.pub.</span><br><span class="line">.....................</span><br></pre></td></tr></table></figure>
+
+
+<p>​        执行命令后会在~目录下生成.ssh文件夹，里面包含id_rsa和id_rsa.pub两个文件。</p>
+<p>注：使用ssh-keygen -t rsa -P ‘’ -f ~/.ssh/id_rsa命令可避免上述交互式操作。</p>
+<p>把本机的公钥追到其他节点root的 .ssh/authorized_keys 里<br>        ssh-copy-id root@hadoop01，输入密码确认<br>        ssh-copy-id root@hadoop02，输入密码确认<br>        ssh-copy-id root@hadoop03，输入密码确认</p>
+<p>就可以免密登录了</p>
+<p>其他机器同样执行以上步骤</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/hadoop/" rel="tag"># hadoop</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/05/27/mysql_on_docker/" rel="next" title="Docker安装Mysql">
+                  Docker安装Mysql <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">宋 力</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
