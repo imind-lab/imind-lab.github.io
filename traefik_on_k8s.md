@@ -4,6 +4,9 @@ date: 2021-05-25 14:38:51
 tags:
   - kubernetes
   - traefik
+categories:
+  - kubernetes
+  - traefik
 ---
 
 #### 一、创建Traefik的自定义资源(CRD)文件

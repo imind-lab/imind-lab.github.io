@@ -4,6 +4,8 @@ date: 2020-10-22 06:58:51
 tags:
   - linux
   - hadoop
+categories:
+  - 大数据
 ---
 
 本文详细介绍搭建4个节点的完全分布式Hadoop集群的方法，Linux系统版本是CentOS 7.9，Hadoop版本是3.2.1，JDK版本是1.8。

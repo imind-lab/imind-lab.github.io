@@ -4,6 +4,8 @@ date: 2020-10-22 06:58:51
 tags:
   - linux
   - hive
+categories:
+  - 大数据
 ---
 
 #### 一、Hive 安装

@@ -4,7 +4,8 @@ date: 2021-05-23 06:58:51
 tags:
   - kubernetes
   - docker
-  - traefik
+categories:
+  - kubernetes
 ---
 
 #### 一、安装Docker-Desktop

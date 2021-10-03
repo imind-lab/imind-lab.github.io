@@ -4,6 +4,8 @@ date: 2021-05-25 14:38:51
 tags:
   - kafka
   - linux
+categories:
+  - 大数据
 ---
 
 #### 一、准备环境

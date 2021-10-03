@@ -3,6 +3,8 @@ title: K8s常用命令
 date: 2021-05-23 06:58:51
 tags:
   - kubernetes
+categories:
+  - kubernetes
 ---
 
 ###### 1、将当前上下文保存所有后续kubectl命令的namespace

@@ -5,6 +5,8 @@ tags:
   - kubernetes
   - docker
   - deepin
+categories:
+  - kubernetes
 ---
 
 #### 1、安装docker
